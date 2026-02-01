@@ -29,5 +29,8 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>J:\SteamLibrary\steamapps\common\Ravenfield\ravenfield_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="System">
+      <HintPath>J:\SteamLibrary\steamapps\common\Ravenfield\ravenfield_Data\Managed\System.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

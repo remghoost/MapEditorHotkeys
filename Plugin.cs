@@ -5,13 +5,17 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-[BepInPlugin("com.remghoost.ravenfield.mapeditorhotkeys", "Map Editor Hotkeys (Debug)", "1.1.0")]
+[BepInPlugin("com.remghoost.ravenfield.mapeditorhotkeys", "Map Editor Hotkeys (Debug)", "1.2.0")]
 public class MapEditorHotkeysDebug : BaseUnityPlugin
 {
     private readonly Dictionary<ConfigEntry<KeyCode>, Toggle> hotkeyMap = new();
     private bool initialized;
 
     private float sceneLogTimer;
+    
+    // UI references
+    private GameObject assetBrowser;
+    private InputField searchInputField;
 
     // Configuration entries
     private ConfigEntry<KeyCode> translateKey;
@@ -69,6 +73,8 @@ public class MapEditorHotkeysDebug : BaseUnityPlugin
 
             initialized = false;
             hotkeyMap.Clear();
+            assetBrowser = null;
+            searchInputField = null;
             return;
         }
 
@@ -79,14 +85,58 @@ public class MapEditorHotkeysDebug : BaseUnityPlugin
             return;
         }
 
+        // Check if user is typing in the search field
+        if (IsInputFieldFocused())
+        {
+            return; // Don't process hotkeys while typing
+        }
+
         foreach (var kv in hotkeyMap)
         {
             if (Input.GetKeyDown(kv.Key.Value))
             {
                 // Logger.LogInfo($"Key pressed: {kv.Key.Value} → {kv.Value.name}");
-                kv.Value.isOn = true;
+                
+                // Special handling for Place tool - toggle AssetBrowser
+                if (kv.Key == placeKey && assetBrowser != null)
+                {
+                    if (kv.Value.isOn && assetBrowser.activeSelf)
+                    {
+                        // Place is already active and AssetBrowser is open - close it
+                        assetBrowser.SetActive(false);
+                        kv.Value.isOn = false;
+                    }
+                    else
+                    {
+                        // Activate Place tool (which opens AssetBrowser)
+                        kv.Value.isOn = true;
+                    }
+                }
+                else
+                {
+                    kv.Value.isOn = true;
+                }
             }
         }
+    }
+
+    private bool IsInputFieldFocused()
+    {
+        // Check if search input field exists and is focused
+        if (searchInputField != null && searchInputField.isFocused)
+        {
+            return true;
+        }
+
+        // Fallback: check if any InputField has focus
+        // This helps catch edge cases where searchInputField reference is stale
+        var focused = UnityEngine.EventSystems.EventSystem.current?.currentSelectedGameObject;
+        if (focused != null && focused.GetComponent<InputField>() != null)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void TryInitialize()
@@ -137,6 +187,37 @@ public class MapEditorHotkeysDebug : BaseUnityPlugin
         {
             // Logger.LogWarning("⚠️ Not all toggles found yet");
             return;
+        }
+
+        // Find AssetBrowser window
+        var assetBrowserObj = GameObject.Find("Late Awake/MapEditor UI/Canvas/Windows #0/AssetBrowser");
+        if (assetBrowserObj)
+        {
+            assetBrowser = assetBrowserObj;
+            // Logger.LogInfo("✅ AssetBrowser found");
+            
+            // Find search input field
+            var searchInputTransform = assetBrowserObj.transform.Find("Window/Content/Search Input");
+            if (searchInputTransform)
+            {
+                searchInputField = searchInputTransform.GetComponent<InputField>();
+                if (searchInputField)
+                {
+                    // Logger.LogInfo("✅ Search InputField found");
+                }
+                else
+                {
+                    // Logger.LogWarning("❌ Search InputField component not found");
+                }
+            }
+            else
+            {
+                // Logger.LogWarning("❌ Search Input transform not found");
+            }
+        }
+        else
+        {
+            // Logger.LogWarning("❌ AssetBrowser not found (may not exist until Place is activated)");
         }
 
         hotkeyMap.Clear();
