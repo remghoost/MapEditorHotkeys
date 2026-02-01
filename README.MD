@@ -17,11 +17,11 @@ Don't try to break the mod, please. <3
 ### **Requires BepInEx 5.**
 
 ### If you already have it:  
-1. Download `.dll` file from the "Releases" section on the right.
+1. Download `.dll` file from the ["Releases" section on the right](https://github.com/remghoost/MapEditorHotkeys/releases/).
 2. Extract into `Ravenfield\BepInEx\plugins`.
 
 ### If you don't already have it:
-1. Download the zip file from the "Releases" section on the right.
+1. Download the zip file from the ["Releases" section on the right](https://github.com/remghoost/MapEditorHotkeys/releases/).
 2. Extract the entire zip file into `Ravenfield` (where `ravenfield.exe` lives).
 3. Start game once then close it to make sure BepInEx initializes properly.
 
