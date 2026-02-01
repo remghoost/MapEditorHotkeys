@@ -11,6 +11,10 @@ Hotkeys are as follows:
 - Terrain = T 
 - Place = G
 
+**If you want to make your own hotkeys, run the game once to generate the config file.**  
+The config file lives in `Ravenfield\BepInEx\config`.  
+Restart the game once you edit the config file.
+
 It shouldn't conflict with anything, but who knows. lmao.  
 Don't try to break the mod, please. <3
 
