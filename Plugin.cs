@@ -30,7 +30,7 @@ public class MapEditorHotkeysDebug : BaseUnityPlugin
         if (SceneManager.GetActiveScene().name != "MapEditor")
         {
             if (initialized)
-                Logger.LogInfo("Left MapEditor scene, clearing state");
+                // Logger.LogInfo("Left MapEditor scene, clearing state");
 
             initialized = false;
             hotkeyMap.Clear();
@@ -39,7 +39,7 @@ public class MapEditorHotkeysDebug : BaseUnityPlugin
 
         if (!initialized)
         {
-            Logger.LogInfo("Attempting MapEditor UI initialization...");
+            // Logger.LogInfo("Attempting MapEditor UI initialization...");
             TryInitialize();
             return;
         }
@@ -59,36 +59,36 @@ public class MapEditorHotkeysDebug : BaseUnityPlugin
         var toolsMenu = GameObject.Find("Late Awake/MapEditor UI/Canvas/ToolsMenu");
         if (!toolsMenu)
         {
-            Logger.LogWarning("❌ ToolsMenu not found");
+            // Logger.LogWarning("❌ ToolsMenu not found");
             return;
         }
 
         var middle = toolsMenu.transform.Find("Middle");
         if (!middle)
         {
-            Logger.LogWarning("❌ ToolsMenu/Middle not found");
+            // Logger.LogWarning("❌ ToolsMenu/Middle not found");
             return;
         }
 
-        Logger.LogInfo("✅ ToolsMenu/Middle found");
+        // Logger.LogInfo("✅ ToolsMenu/Middle found");
 
         Toggle FindToggle(string name)
         {
             var t = middle.Find(name);
             if (!t)
             {
-                Logger.LogWarning($"❌ Toggle transform not found: {name}");
+                // Logger.LogWarning($"❌ Toggle transform not found: {name}");
                 return null;
             }
 
             var toggle = t.GetComponent<Toggle>();
             if (!toggle)
             {
-                Logger.LogWarning($"❌ Toggle component missing: {name}");
+                // Logger.LogWarning($"❌ Toggle component missing: {name}");
                 return null;
             }
 
-            Logger.LogInfo($"✅ Toggle found: {name}");
+            // Logger.LogInfo($"✅ Toggle found: {name}");
             return toggle;
         }
 
@@ -100,7 +100,7 @@ public class MapEditorHotkeysDebug : BaseUnityPlugin
 
         if (!translate || !rotate || !scale || !terrain || !place)
         {
-            Logger.LogWarning("⚠️ Not all toggles found yet");
+            // Logger.LogWarning("⚠️ Not all toggles found yet");
             return;
         }
 
@@ -112,6 +112,6 @@ public class MapEditorHotkeysDebug : BaseUnityPlugin
         hotkeyMap[KeyCode.G] = place;
 
         initialized = true;
-        Logger.LogInfo("🎉 MapEditor hotkeys initialized successfully");
+        // Logger.LogInfo("🎉 MapEditor hotkeys initialized successfully");
     }
 }
