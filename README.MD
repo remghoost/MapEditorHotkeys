@@ -1,6 +1,7 @@
 ## Mod for Ravenfield.
 
-**Adds hotkeys to the Map Editor.**
+**Adds hotkeys to the Map Editor.**  
+**Now with configurable hotkeys!**
 
 Hotkeys are as follows:
 
